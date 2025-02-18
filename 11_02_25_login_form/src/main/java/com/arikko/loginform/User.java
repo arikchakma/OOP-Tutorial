@@ -1,15 +1,19 @@
 package com.arikko.loginform;
 
+import java.util.ArrayList;
+
 public class User {
     public String username, name, password;
+    public ArrayList<User> friends;
 
     public User() {
     }
 
-    public User(String username, String name, String password) {
+    public User(String username, String name, String password, ArrayList<User> friends) {
         this.username = username;
         this.name = name;
         this.password = password;
+        this.friends = friends;
     }
 
     public String getUsername() {
@@ -43,5 +47,13 @@ public class User {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public ArrayList<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(ArrayList<User> friends) {
+        this.friends = friends;
     }
 }

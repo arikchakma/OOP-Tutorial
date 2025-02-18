@@ -1,5 +1,6 @@
 package com.arikko.loginform;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
@@ -21,10 +22,44 @@ public class LoginViewController {
     boolean hasUpdatedUsername = false;
     // temp database
     ArrayList<User> users;
+    @javafx.fxml.FXML
+    private Tab dashbaordTab;
+    @javafx.fxml.FXML
+    private Tab registerTab;
+    @javafx.fxml.FXML
+    private Label usernameLabel;
+    @javafx.fxml.FXML
+    private Tab loginTab;
+    @javafx.fxml.FXML
+    private Label nameLabel;
+
+    User current_logged_in_user = null;
+    User selected_profile_user = null;
+
+    @javafx.fxml.FXML
+    private TabPane mainTabPane;
+    @javafx.fxml.FXML
+    private Label profileNameLabel;
+    @javafx.fxml.FXML
+    private Label profileUsernameLabel;
+    @javafx.fxml.FXML
+    private ComboBox<String> usersCombobox;
+    @javafx.fxml.FXML
+    private Tab profileTab;
+    @javafx.fxml.FXML
+    private Button addFriendButton;
+    @javafx.fxml.FXML
+    private Button removeFriendButton;
 
     @javafx.fxml.FXML
     public void initialize() {
         users = new ArrayList<User>();
+        dashbaordTab.setDisable(true);
+        profileTab.setDisable(true);
+
+        users.add(new User("arikchakma", "Arik Chakma", "Arik112233", new ArrayList<>()));
+        users.add(new User("john", "John", "Arik112233", new ArrayList<>()));
+        users.add(new User("kamran", "Kamran", "Arik112233", new ArrayList<>()));
     }
 
     @javafx.fxml.FXML
@@ -70,10 +105,24 @@ public class LoginViewController {
         usernameTextField.clear();
         passwordPasswordField.clear();
 
-        alert.setAlertType(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Login Successful");
-        alert.setContentText("Welcome back, " + current_user.getName());
-        alert.showAndWait();
+        current_logged_in_user = current_user;
+        dashbaordTab.setDisable(false);
+        profileTab.setDisable(false);
+        nameLabel.setText(current_logged_in_user.getName());
+        usernameLabel.setText(current_logged_in_user.getUsername());
+
+        usersCombobox.getItems().clear();
+        for (User u : users) {
+            if (!u.getUsername().equals(current_user.getUsername())) {
+                String key = u.getName() + "--" + u.getUsername();
+                usersCombobox.getItems().add(key);
+            }
+        }
+
+        SingleSelectionModel<Tab> singleSelectionModel = mainTabPane.getSelectionModel();
+        singleSelectionModel.select(dashbaordTab);
+        loginTab.setDisable(true);
+        registerTab.setDisable(true);
     }
 
     private boolean validateUsernameAndPassword(String username, String pwd) {
@@ -107,6 +156,8 @@ public class LoginViewController {
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
+        // TODO: custom logic for the terms check
+
         boolean isValidCred = this.validateUsernameAndPassword(username, password);
         if (!isValidCred) {
             alert.setTitle("Incorrect Credentials");
@@ -123,8 +174,10 @@ public class LoginViewController {
             }
         }
 
-        User new_user = new User(username, name, password);
+        User new_user = new User(username, name, password, new ArrayList<>());
         users.add(new_user);
+        String key = new_user.getName() + "--" + new_user.getUsername();
+        usersCombobox.getItems().add(key);
 
         registerNameTextField.clear();
         registerUsernameTextField.clear();
@@ -152,5 +205,81 @@ public class LoginViewController {
     @javafx.fxml.FXML
     public void usernameOnKeyTyped(Event event) {
         hasUpdatedUsername = true;
+    }
+
+    @javafx.fxml.FXML
+    public void logoutOnAction(ActionEvent actionEvent) {
+        current_logged_in_user = null;
+
+        loginTab.setDisable(false);
+        registerTab.setDisable(false);
+        dashbaordTab.setDisable(true);
+        profileTab.setDisable(true);
+
+        SingleSelectionModel<Tab> singleSelectionModel = mainTabPane.getSelectionModel();
+        singleSelectionModel.select(loginTab);
+    }
+
+    @javafx.fxml.FXML
+    public void goToProfileOnAction(ActionEvent actionEvent) {
+        String[] keys = usersCombobox.getValue().split("--");
+        String username = keys[1];
+
+        selected_profile_user = null;
+        for (User u : users) {
+            if (u.getUsername().equals(username)) {
+                selected_profile_user = u;
+                break;
+            }
+        }
+
+        if (selected_profile_user == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("User doesn't exist");
+            alert.showAndWait();
+            return;
+        }
+
+        profileNameLabel.setText(selected_profile_user.getName());
+        profileUsernameLabel.setText(selected_profile_user.getUsername());
+
+        ArrayList<User> current_user_friends = current_logged_in_user.getFriends();
+
+        boolean is_selected_user_a_friend = false;
+        for (User f : current_user_friends) {
+            if (f.getUsername().equals(selected_profile_user.getUsername())) {
+                is_selected_user_a_friend = true;
+                break;
+            }
+        }
+
+        if (is_selected_user_a_friend) {
+            addFriendButton.setDisable(true);
+            removeFriendButton.setDisable(false);
+        } else {
+            addFriendButton.setDisable(false);
+            removeFriendButton.setDisable(true);
+        }
+
+        SingleSelectionModel<Tab> singleSelectionModel = mainTabPane.getSelectionModel();
+        singleSelectionModel.select(profileTab);
+    }
+
+    @javafx.fxml.FXML
+    public void removeFriendOnAction(ActionEvent actionEvent) {
+        current_logged_in_user.getFriends().remove(selected_profile_user);
+        selected_profile_user.getFriends().remove(current_logged_in_user);
+
+        addFriendButton.setDisable(false);
+        removeFriendButton.setDisable(true);
+    }
+
+    @javafx.fxml.FXML
+    public void addFriendOnAction(ActionEvent actionEvent) {
+        current_logged_in_user.getFriends().add(selected_profile_user);
+        selected_profile_user.getFriends().add(current_logged_in_user);
+
+        addFriendButton.setDisable(true);
+        removeFriendButton.setDisable(false);
     }
 }
