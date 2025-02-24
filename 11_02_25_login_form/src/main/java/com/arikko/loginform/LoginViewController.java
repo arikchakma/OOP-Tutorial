@@ -5,6 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.control.*;
 
+import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class LoginViewController {
@@ -19,9 +21,6 @@ public class LoginViewController {
     @javafx.fxml.FXML
     private TextField registerNameTextField;
 
-    boolean hasUpdatedUsername = false;
-    // temp database
-    ArrayList<User> users;
     @javafx.fxml.FXML
     private Tab dashbaordTab;
     @javafx.fxml.FXML
@@ -32,6 +31,11 @@ public class LoginViewController {
     private Tab loginTab;
     @javafx.fxml.FXML
     private Label nameLabel;
+
+    boolean hasUpdatedUsername = false;
+    // temp database
+    ArrayList<User> users;
+    ArrayList<Post> posts;
 
     User current_logged_in_user = null;
     User selected_profile_user = null;
@@ -50,12 +54,26 @@ public class LoginViewController {
     private Button addFriendButton;
     @javafx.fxml.FXML
     private Button removeFriendButton;
+    @javafx.fxml.FXML
+    private Tab feedTab;
+    @javafx.fxml.FXML
+    private Tab createPostTab;
+    @javafx.fxml.FXML
+    private TextArea descriptionTextarea;
+    @javafx.fxml.FXML
+    private ComboBox<String> allPostComboBox;
+    @javafx.fxml.FXML
+    private TextArea allPostTextArea;
 
     @javafx.fxml.FXML
     public void initialize() {
         users = new ArrayList<User>();
+        posts = new ArrayList<Post>();
+
         dashbaordTab.setDisable(true);
         profileTab.setDisable(true);
+        createPostTab.setDisable(true);
+        feedTab.setDisable(true);
 
         users.add(new User("arikchakma", "Arik Chakma", "Arik112233", new ArrayList<>()));
         users.add(new User("john", "John", "Arik112233", new ArrayList<>()));
@@ -108,6 +126,8 @@ public class LoginViewController {
         current_logged_in_user = current_user;
         dashbaordTab.setDisable(false);
         profileTab.setDisable(false);
+        createPostTab.setDisable(false);
+        feedTab.setDisable(false);
         nameLabel.setText(current_logged_in_user.getName());
         usernameLabel.setText(current_logged_in_user.getUsername());
 
@@ -215,6 +235,10 @@ public class LoginViewController {
         registerTab.setDisable(false);
         dashbaordTab.setDisable(true);
         profileTab.setDisable(true);
+        createPostTab.setDisable(true);
+        feedTab.setDisable(true);
+
+        allPostTextArea.setText("");
 
         SingleSelectionModel<Tab> singleSelectionModel = mainTabPane.getSelectionModel();
         singleSelectionModel.select(loginTab);
@@ -281,5 +305,89 @@ public class LoginViewController {
 
         addFriendButton.setDisable(true);
         removeFriendButton.setDisable(false);
+    }
+
+    @javafx.fxml.FXML
+    public void publishPostOnAction(ActionEvent actionEvent) {
+        String current_user_username = current_logged_in_user.getUsername();
+        String content = descriptionTextarea.getText();
+
+        int new_id = 1;
+        for (Post p : posts) {
+            new_id += 1;
+        }
+
+        Post new_post = new Post(new_id, current_user_username, content, LocalDate.now(), new ArrayList<>());
+        posts.add(new_post);
+
+        descriptionTextarea.clear();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("New Post!!");
+        alert.showAndWait();
+    }
+
+    @javafx.fxml.FXML
+    public void loadPostsOnAction(ActionEvent actionEvent) {
+        ArrayList<String> user_to_show = new ArrayList<String>();
+        user_to_show.add(current_logged_in_user.getUsername());
+        for (User f : current_logged_in_user.getFriends()) {
+            user_to_show.add(f.getUsername());
+        }
+
+        ArrayList<Post> post_to_show = new ArrayList<Post>();
+        for (Post p : posts) {
+            if (user_to_show.contains(p.getUsername())) {
+                post_to_show.add(p);
+            }
+        }
+
+        allPostComboBox.getItems().clear();
+
+        String all_posts = "";
+        for (Post p : post_to_show) {
+            allPostComboBox.getItems().add(Integer.toString(p.getId()));
+            all_posts += p.toString();
+            all_posts += "\n\n";
+        }
+
+        if (post_to_show.isEmpty()) {
+            all_posts = "No Post!";
+        }
+
+        allPostTextArea.setText(all_posts);
+    }
+
+    @javafx.fxml.FXML
+    public void likePostOnAction(ActionEvent actionEvent) {
+        int selected_post_id = Integer.parseInt(allPostComboBox.getValue());
+        for (Post p : posts) {
+            if (p.getId() == selected_post_id) {
+                if (p.getLikes().contains(current_logged_in_user)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("You can't like the same post again");
+                    alert.showAndWait();
+                    break;
+                }
+
+                p.getLikes().add(current_logged_in_user);
+            }
+        }
+    }
+
+    @javafx.fxml.FXML
+    public void dislikePostOnAction(ActionEvent actionEvent) {
+        int selected_post_id = Integer.parseInt(allPostComboBox.getValue());
+        for (Post p : posts) {
+            if (p.getId() == selected_post_id) {
+                if (p.getLikes().contains(current_logged_in_user)) {
+                    p.getLikes().remove(current_logged_in_user);
+                    break;
+                }
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("You can't dislike this post");
+                alert.showAndWait();
+            }
+        }
     }
 }
