@@ -7,17 +7,15 @@ public class Post {
     private int id;
     private String username, content;
     private LocalDate createdAt;
-    private ArrayList<User> likes;
 
     public Post() {
     }
 
-    public Post(int id, String username, String content, LocalDate createdAt, ArrayList<User> likes) {
+    public Post(int id, String username, String content, LocalDate createdAt) {
         this.id = id;
         this.username = username;
         this.content = content;
         this.createdAt = createdAt;
-        this.likes = likes;
     }
 
     public int getId() {
@@ -52,14 +50,6 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-    public ArrayList<User> getLikes() {
-        return likes;
-    }
-
-    public void setLikes(ArrayList<User> likes) {
-        this.likes = likes;
-    }
-
     @Override
     public String toString() {
         return "Post{" +
@@ -67,7 +57,6 @@ public class Post {
                 ", username='" + username + '\'' +
                 ", content='" + content + '\'' +
                 ", createdAt=" + createdAt +
-                ", likes=" + likes +
                 '}';
     }
 }

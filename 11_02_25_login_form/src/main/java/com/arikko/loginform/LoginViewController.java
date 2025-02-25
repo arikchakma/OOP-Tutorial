@@ -36,6 +36,8 @@ public class LoginViewController {
     // temp database
     ArrayList<User> users;
     ArrayList<Post> posts;
+    ArrayList<Friendship> friendships;
+    ArrayList<PostLike> post_likes;
 
     User current_logged_in_user = null;
     User selected_profile_user = null;
@@ -69,15 +71,17 @@ public class LoginViewController {
     public void initialize() {
         users = new ArrayList<User>();
         posts = new ArrayList<Post>();
+        friendships = new ArrayList<Friendship>();
+        post_likes = new ArrayList<PostLike>();
 
         dashbaordTab.setDisable(true);
         profileTab.setDisable(true);
         createPostTab.setDisable(true);
         feedTab.setDisable(true);
 
-        users.add(new User("arikchakma", "Arik Chakma", "Arik112233", new ArrayList<>()));
-        users.add(new User("john", "John", "Arik112233", new ArrayList<>()));
-        users.add(new User("kamran", "Kamran", "Arik112233", new ArrayList<>()));
+        users.add(new User("arikchakma", "Arik Chakma", "Arik112233"));
+        users.add(new User("john", "John", "Arik112233"));
+        users.add(new User("kamran", "Kamran", "Arik112233"));
     }
 
     @javafx.fxml.FXML
@@ -194,7 +198,7 @@ public class LoginViewController {
             }
         }
 
-        User new_user = new User(username, name, password, new ArrayList<>());
+        User new_user = new User(username, name, password);
         users.add(new_user);
         String key = new_user.getName() + "--" + new_user.getUsername();
         usersCombobox.getItems().add(key);
@@ -267,11 +271,10 @@ public class LoginViewController {
         profileNameLabel.setText(selected_profile_user.getName());
         profileUsernameLabel.setText(selected_profile_user.getUsername());
 
-        ArrayList<User> current_user_friends = current_logged_in_user.getFriends();
 
         boolean is_selected_user_a_friend = false;
-        for (User f : current_user_friends) {
-            if (f.getUsername().equals(selected_profile_user.getUsername())) {
+        for (Friendship f : friendships) {
+            if (f.getUsername().equals(current_logged_in_user.getUsername()) && f.getFriendUsername().equals(selected_profile_user.getUsername())) {
                 is_selected_user_a_friend = true;
                 break;
             }
@@ -291,8 +294,21 @@ public class LoginViewController {
 
     @javafx.fxml.FXML
     public void removeFriendOnAction(ActionEvent actionEvent) {
-        current_logged_in_user.getFriends().remove(selected_profile_user);
-        selected_profile_user.getFriends().remove(current_logged_in_user);
+        ArrayList<Friendship> new_friendships = new ArrayList<>();
+        for (Friendship f : friendships) {
+            if (f.getUsername().equals(current_logged_in_user.getUsername()) &&
+                    f.getFriendUsername().equals(selected_profile_user.getUsername())) {
+                continue;
+            }
+
+            if (f.getUsername().equals(selected_profile_user.getUsername()) && f.getFriendUsername().equals(current_logged_in_user.getUsername())) {
+                continue;
+            }
+
+            new_friendships.add(f);
+        }
+
+        friendships = new_friendships;
 
         addFriendButton.setDisable(false);
         removeFriendButton.setDisable(true);
@@ -300,8 +316,11 @@ public class LoginViewController {
 
     @javafx.fxml.FXML
     public void addFriendOnAction(ActionEvent actionEvent) {
-        current_logged_in_user.getFriends().add(selected_profile_user);
-        selected_profile_user.getFriends().add(current_logged_in_user);
+        Friendship current_user_friendship = new Friendship(current_logged_in_user.getUsername(), selected_profile_user.getUsername());
+        Friendship selected_user_friendship = new Friendship(selected_profile_user.getUsername(), current_user_friendship.getUsername());
+
+        friendships.add(current_user_friendship);
+        friendships.add(selected_user_friendship);
 
         addFriendButton.setDisable(true);
         removeFriendButton.setDisable(false);
@@ -317,7 +336,7 @@ public class LoginViewController {
             new_id += 1;
         }
 
-        Post new_post = new Post(new_id, current_user_username, content, LocalDate.now(), new ArrayList<>());
+        Post new_post = new Post(new_id, current_user_username, content, LocalDate.now());
         posts.add(new_post);
 
         descriptionTextarea.clear();
@@ -330,8 +349,10 @@ public class LoginViewController {
     public void loadPostsOnAction(ActionEvent actionEvent) {
         ArrayList<String> user_to_show = new ArrayList<String>();
         user_to_show.add(current_logged_in_user.getUsername());
-        for (User f : current_logged_in_user.getFriends()) {
-            user_to_show.add(f.getUsername());
+        for (Friendship f : friendships) {
+            if (f.getUsername().equals(current_logged_in_user.getUsername())) {
+                user_to_show.add(f.getFriendUsername());
+            }
         }
 
         ArrayList<Post> post_to_show = new ArrayList<Post>();
@@ -346,7 +367,16 @@ public class LoginViewController {
         String all_posts = "";
         for (Post p : post_to_show) {
             allPostComboBox.getItems().add(Integer.toString(p.getId()));
+
+            String likes= "Liked By: ";
+            for (PostLike pl: post_likes) {
+                if(pl.getPostId() == p.getId()) {
+                    likes += pl.getLikedByUsername() + "\n";
+                }
+            }
+
             all_posts += p.toString();
+            all_posts+= likes;
             all_posts += "\n\n";
         }
 
@@ -362,14 +392,23 @@ public class LoginViewController {
         int selected_post_id = Integer.parseInt(allPostComboBox.getValue());
         for (Post p : posts) {
             if (p.getId() == selected_post_id) {
-                if (p.getLikes().contains(current_logged_in_user)) {
+                boolean has_liked = false;
+                for (PostLike pl : post_likes) {
+                    if (pl.getPostId() == selected_post_id && pl.getLikedByUsername().equals(current_logged_in_user.getUsername())) {
+                        has_liked = true;
+                        break;
+                    }
+                }
+
+                if (has_liked) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText("You can't like the same post again");
                     alert.showAndWait();
                     break;
                 }
 
-                p.getLikes().add(current_logged_in_user);
+                PostLike new_pl = new PostLike(p.getId(), current_logged_in_user.getUsername());
+                post_likes.add(new_pl);
             }
         }
     }
@@ -379,14 +418,25 @@ public class LoginViewController {
         int selected_post_id = Integer.parseInt(allPostComboBox.getValue());
         for (Post p : posts) {
             if (p.getId() == selected_post_id) {
-                if (p.getLikes().contains(current_logged_in_user)) {
-                    p.getLikes().remove(current_logged_in_user);
-                    break;
+                ArrayList<PostLike> new_post_likes = new ArrayList<PostLike>();
+                boolean has_liked = false;
+                for (PostLike pl:post_likes) {
+                    if(pl.getPostId() == p.getId() && pl.getLikedByUsername().equals(current_logged_in_user.getUsername())) {
+                        has_liked = true;
+                        continue;
+                    }
+
+                    new_post_likes.add(pl);
                 }
 
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText("You can't dislike this post");
-                alert.showAndWait();
+                if(!has_liked) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("You can't dislike this post");
+                    alert.showAndWait();
+                    return;
+                }
+
+                post_likes = new_post_likes;
             }
         }
     }
