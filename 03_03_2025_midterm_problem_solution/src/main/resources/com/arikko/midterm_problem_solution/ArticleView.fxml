@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="1165.0" prefWidth="1096.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arikko.midterm_problem_solution.ArticleViewController">
+   <children>
+      <Label layoutX="24.0" layoutY="38.0" text="Title" />
+      <TextField fx:id="titleTextField" layoutX="24.0" layoutY="63.0" />
+      <Label layoutX="24.0" layoutY="98.0" text="Name of the first Author" />
+      <TextField fx:id="nameOfTheFirstAuthorTextField" layoutX="24.0" layoutY="123.0" />
+      <Label layoutX="24.0" layoutY="156.0" text="Article Type" />
+      <ComboBox fx:id="articleTypeComboBox" layoutX="24.0" layoutY="180.0" prefHeight="26.0" prefWidth="160.0" />
+      <Label layoutX="226.0" layoutY="38.0" text="Publication Date" />
+      <DatePicker fx:id="publicationDateDatePicker" layoutX="226.0" layoutY="64.0" />
+      <CheckBox fx:id="citationStatusCheckBox" layoutX="226.0" layoutY="162.0" mnemonicParsing="false" text="Citation Status" />
+      <Label layoutX="226.0" layoutY="98.0" text="Number of Authors" />
+      <TextField fx:id="numberOfAuthorsTextField" layoutX="226.0" layoutY="123.0" prefHeight="26.0" prefWidth="186.0" />
+      <Button layoutX="23.0" layoutY="223.0" mnemonicParsing="false" onAction="#addArticleButtonMouseOnClicked" prefHeight="26.0" prefWidth="389.0" text="Add Article" />
+      <TableView fx:id="articlesTableView" layoutX="23.0" layoutY="444.0" prefHeight="392.0" prefWidth="547.0">
+        <columns>
+          <TableColumn fx:id="titleCol" prefWidth="75.0" text="Title" />
+          <TableColumn fx:id="authorNameCol" prefWidth="75.0" text="Author Name" />
+            <TableColumn fx:id="articleTypeCol" prefWidth="75.0" text="Article Type" />
+            <TableColumn fx:id="citationStatusCol" prefWidth="75.0" text="Citation Status" />
+            <TableColumn fx:id="noOfAuthorsCol" prefWidth="75.0" text="No of Authors" />
+            <TableColumn fx:id="publicationDateCol" prefWidth="75.0" text="Publication Date" />
+        </columns>
+      </TableView>
+      <ComboBox fx:id="filterArticleTypeComboBox" layoutX="21.0" layoutY="336.0" prefHeight="26.0" prefWidth="160.0" />
+      <CheckBox fx:id="filterCitationStatusCheckBox" layoutX="222.0" layoutY="340.0" mnemonicParsing="false" text="Citation Status" />
+      <Label layoutX="21.0" layoutY="313.0" text="Article Type" />
+      <Button layoutX="344.0" layoutY="336.0" mnemonicParsing="false" onAction="#searchArticleOnAction" prefHeight="26.0" prefWidth="130.0" text="Search Article" />
+      <Label layoutX="21.0" layoutY="376.0" text="Start Year" />
+      <TextField fx:id="startYearTextField" layoutX="21.0" layoutY="401.0" />
+      <Label layoutX="208.0" layoutY="376.0" text="End Year" />
+      <TextField fx:id="endYeatTextField" layoutX="208.0" layoutY="401.0" />
+      <Button layoutX="384.0" layoutY="401.0" mnemonicParsing="false" onAction="#yearFilterOnAction" prefHeight="26.0" prefWidth="130.0" text="Year Filter" />
+      <Label fx:id="messageLabel" layoutX="21.0" layoutY="269.0" text="Message" />
+      <Button layoutX="607.0" layoutY="34.0" mnemonicParsing="false" onAction="#showArticleWithHighestAuthorButtonMouseOnClicked" prefHeight="26.0" prefWidth="404.0" text="Article with highest number of authors" />
+      <TextArea fx:id="highestNumberOfAuthorsTextArea" layoutX="608.0" layoutY="74.0" prefHeight="139.0" prefWidth="404.0" />
+   </children>
+</AnchorPane>
