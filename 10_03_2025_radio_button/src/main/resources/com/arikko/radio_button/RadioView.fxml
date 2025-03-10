@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arikko.radio_button.RadioViewController">
+   <children>
+      <RadioButton fx:id="maleRadioButton" layoutX="92.0" layoutY="136.0" mnemonicParsing="false" text="Male" />
+      <RadioButton fx:id="femaleRadioButton" layoutX="92.0" layoutY="174.0" mnemonicParsing="false" text="Female" />
+      <RadioButton fx:id="otherRadioButton" layoutX="92.0" layoutY="213.0" mnemonicParsing="false" text="Other" />
+      <Button layoutX="343.0" layoutY="162.0" mnemonicParsing="false" onAction="#showToggleValueOnAction" text="Show Toggle Value" />
+   </children>
+</AnchorPane>
