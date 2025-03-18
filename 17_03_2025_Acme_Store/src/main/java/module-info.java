@@ -7,4 +7,6 @@ module com.arikko.acme_store {
     exports com.arikko.acme_store;
     exports com.arikko.acme_store.users;
     opens com.arikko.acme_store.users to javafx.fxml;
+    exports com.arikko.acme_store.controllers;
+    opens com.arikko.acme_store.controllers to javafx.fxml;
 }

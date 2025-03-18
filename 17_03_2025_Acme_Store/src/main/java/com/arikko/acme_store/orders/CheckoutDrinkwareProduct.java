@@ -4,7 +4,7 @@ public class CheckoutDrinkwareProduct extends CheckoutProduct {
     public CheckoutDrinkwareProduct() {
     }
 
-    public CheckoutDrinkwareProduct(String type, int productId, int quantity) {
-        super(type, productId, quantity);
+    public CheckoutDrinkwareProduct(String type, int productId, int quantity, String color) {
+        super(type, productId, quantity, color);
     }
 }

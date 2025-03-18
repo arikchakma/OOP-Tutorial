@@ -6,8 +6,8 @@ public class CheckoutApparelProduct extends CheckoutProduct {
     public CheckoutApparelProduct() {
     }
 
-    public CheckoutApparelProduct(String type, int productId, int quantity, String size) {
-        super(type, productId, quantity);
+    public CheckoutApparelProduct(String type, int productId, int quantity, String color, String size) {
+        super(type, productId, quantity, color);
         this.size = size;
     }
 

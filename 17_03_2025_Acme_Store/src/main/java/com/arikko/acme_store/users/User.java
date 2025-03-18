@@ -1,10 +1,12 @@
 package com.arikko.acme_store.users;
 
+import java.util.ArrayList;
+
 public abstract class User {
     private int id;
     private String firstName, lastName, email, password;
     private String phoneNumber; // +8801xxx
-    private String type; // Customer, Admin
+    private String type; // customer, admin
 
     public User() {
     }
@@ -86,5 +88,34 @@ public abstract class User {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", type='" + type + '\'' +
                 '}';
+    }
+
+    public static User verifyUser(ArrayList<User> users, String email, String password) {
+        User currUser = null;
+        for (User u : users) {
+            if (u.getEmail().equals(email) && u.getPassword().equals(password)) {
+                currUser = u;
+                break;
+            }
+        }
+
+        return currUser;
+    }
+
+    public static boolean validateEmailAndPassword(String email, String pwd) {
+        if (!email.contains("@")) {
+            return false;
+        }
+
+        String[] numbers = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        boolean hasNumber = false;
+        for (String number : numbers) {
+            if (pwd.contains(number)) {
+                hasNumber = true;
+                break;
+            }
+        }
+
+        return hasNumber && pwd.length() >= 6;
     }
 }
