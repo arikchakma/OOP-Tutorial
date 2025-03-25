@@ -1,6 +1,9 @@
 package com.arikko.acme_store.product;
 
+import com.arikko.acme_store.users.User;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class Product {
     private int id;
@@ -89,5 +92,17 @@ public abstract class Product {
                 ", quantity=" + quantity +
                 ", price=" + price +
                 '}';
+    }
+
+    public static int generateProductId(ArrayList<Product> products) {
+        Random rd = new Random();
+        int lastProductId = rd.nextInt(1000, 10000);
+        // [].getLast();
+        if (!products.isEmpty()) {
+            Product lastProduct = products.getLast();
+            lastProductId = lastProduct.getId() + 1;
+        }
+
+        return lastProductId;
     }
 }

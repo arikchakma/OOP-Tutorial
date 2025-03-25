@@ -1,6 +1,7 @@
 package com.arikko.acme_store.controllers;
 
 import com.arikko.acme_store.MainApplication;
+import com.arikko.acme_store.product.Product;
 import com.arikko.acme_store.users.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,12 @@ public class LoginViewController {
 
     // dummy local database
     private ArrayList<User> users;
+    private ArrayList<Product> products;
+
+    public void setDummyDb(ArrayList<User> users, ArrayList<Product> products) {
+        this.users = users;
+        this.products = products;
+    }
 
     @javafx.fxml.FXML
     private Label showPasswordLabel;
@@ -29,9 +36,6 @@ public class LoginViewController {
         showPasswordLabel.setOpacity(0);
     }
 
-    public void setUsers(ArrayList<User> users) {
-        this.users = users;
-    }
 
     @javafx.fxml.FXML
     public void signUpOnAction(ActionEvent actionEvent) {
@@ -47,7 +51,7 @@ public class LoginViewController {
             Scene registrationScene = new Scene(registrationFxmlLoader.load());
             stage.setScene(registrationScene);
             RegistrationViewController registrationViewController = (RegistrationViewController) registrationFxmlLoader.getController();
-            registrationViewController.setUsers(this.users);
+            registrationViewController.setDummyDb(this.users, this.products);
         } catch (Exception e) {
         }
     }
@@ -78,10 +82,6 @@ public class LoginViewController {
         emailTextField.clear();
         passwordPasswordField.clear();
 
-        alert.setAlertType(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Login Successful");
-        alert.show();
-
         Scene scene = ((Button) actionEvent.getSource()).getScene();
         Stage stage = (Stage) scene.getWindow();
 
@@ -93,7 +93,7 @@ public class LoginViewController {
             Scene layoutScene = new Scene(layoutFxmlLoader.load());
             stage.setScene(layoutScene);
             LayoutViewController layoutViewController = (LayoutViewController) layoutFxmlLoader.getController();
-            layoutViewController.setUsers(this.users);
+            layoutViewController.setDummyDb(this.users, this.products);
             layoutViewController.setCurrentUser(currentUser);
         } catch (Exception e) {
         }

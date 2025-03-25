@@ -1,6 +1,7 @@
 package com.arikko.acme_store.controllers;
 
 import com.arikko.acme_store.MainApplication;
+import com.arikko.acme_store.product.Product;
 import com.arikko.acme_store.users.Customer;
 import com.arikko.acme_store.users.User;
 import javafx.event.ActionEvent;
@@ -27,9 +28,11 @@ public class RegistrationViewController
 
     // dummy local database
     private ArrayList<User> users;
+    private ArrayList<Product> products;
 
-    public void setUsers(ArrayList<User> users) {
+    public void setDummyDb(ArrayList<User> users, ArrayList<Product> products) {
         this.users = users;
+        this.products = products;
     }
 
     @javafx.fxml.FXML
@@ -100,7 +103,7 @@ public class RegistrationViewController
             Scene loginScene = new Scene(loginFxmlLoader.load());
             stage.setScene(loginScene);
             LoginViewController loginViewController = (LoginViewController) loginFxmlLoader.getController();
-            loginViewController.setUsers(this.users);
+            loginViewController.setDummyDb(this.users, this.products);
         } catch (Exception e) {
         }
     }

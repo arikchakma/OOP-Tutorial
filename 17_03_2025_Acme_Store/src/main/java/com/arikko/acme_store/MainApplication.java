@@ -1,6 +1,7 @@
 package com.arikko.acme_store;
 
 import com.arikko.acme_store.controllers.LoginViewController;
+import com.arikko.acme_store.product.Product;
 import com.arikko.acme_store.users.Admin;
 import com.arikko.acme_store.users.User;
 import javafx.application.Application;
@@ -16,6 +17,7 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         // init all dummy database array list
         ArrayList<User> users = new ArrayList<>();
+        ArrayList<Product> products = new ArrayList<>();
 
         User dummyAdminUser = new Admin(1111, "Arik", "Chakma", "arikchangma@gmail.com", "arik112233", "+8801xxxx");
         users.add(dummyAdminUser);
@@ -26,7 +28,7 @@ public class MainApplication extends Application {
         stage.setScene(scene);
 
         LoginViewController loginViewController = (LoginViewController) fxmlLoader.getController();
-        loginViewController.setUsers(users);
+        loginViewController.setDummyDb(users, products);
 
         stage.show();
     }
