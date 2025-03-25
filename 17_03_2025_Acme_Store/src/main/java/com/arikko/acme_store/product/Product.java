@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Product {
     private int id;
-    private String name, description, type;
+    private String name, description, productType;
     private ArrayList<String> colors;
     private int quantity;
     private float price;
@@ -12,11 +12,11 @@ public abstract class Product {
     public Product() {
     }
 
-    public Product(int id, String name, String description, String type, ArrayList<String> colors, int quantity, float price) {
+    public Product(int id, String name, String description, String productType, ArrayList<String> colors, int quantity, float price) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.type = type;
+        this.productType = productType;
         this.colors = colors;
         this.quantity = quantity;
         this.price = price;
@@ -46,12 +46,12 @@ public abstract class Product {
         this.description = description;
     }
 
-    public String getType() {
-        return type;
+    public String getProductType() {
+        return productType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setProductType(String productType) {
+        this.productType = productType;
     }
 
     public ArrayList<String> getColors() {
@@ -84,7 +84,7 @@ public abstract class Product {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", type='" + type + '\'' +
+                ", type='" + productType + '\'' +
                 ", colors=" + colors +
                 ", quantity=" + quantity +
                 ", price=" + price +

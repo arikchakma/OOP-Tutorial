@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arikko.acme_store.controllers.LayoutViewController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu fx:id="adminMenu" mnemonicParsing="false" text="Admin">
+            <items>
+                  <MenuItem mnemonicParsing="false" onAction="#adminAllProductsOnAction" text="All Products" />
+              <MenuItem mnemonicParsing="false" onAction="#adminCreateProductOnAction" text="Create Product" />
+                  <MenuItem mnemonicParsing="false" onAction="#adminUpdateUserOnAction" text="Update Product" />
+                  <MenuItem mnemonicParsing="false" onAction="#adminDeleteProductOnAction" text="Delete Product" />
+                  <MenuItem mnemonicParsing="false" onAction="#adminOrdersOnAction" text="Orders" />
+            </items>
+          </Menu>
+          <Menu fx:id="customerMenu" mnemonicParsing="false" text="Customer">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#customerAllProductsOnAction" text="All Products" />
+                  <MenuItem mnemonicParsing="false" onAction="#customerDashboardOnAction" text="Dashboard" />
+                  <MenuItem mnemonicParsing="false" onAction="#customerCardOnAction" text="Cart" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

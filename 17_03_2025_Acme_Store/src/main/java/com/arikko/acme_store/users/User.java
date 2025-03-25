@@ -1,6 +1,8 @@
 package com.arikko.acme_store.users;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class User {
     private int id;

@@ -5,14 +5,16 @@ import java.util.ArrayList;
 public abstract class ApparelProduct extends Product {
     private ArrayList<String> sizes;
     private String material;
+    private String type; // hoodie/t-shirt
 
     public ApparelProduct() {
     }
 
-    public ApparelProduct(int id, String name, String description, String type, ArrayList<String> colors, int quantity, float price, ArrayList<String> sizes, String material) {
-        super(id, name, description, type, colors, quantity, price);
+    public ApparelProduct(int id, String name, String description, String productType, ArrayList<String> colors, int quantity, float price, ArrayList<String> sizes, String material, String type) {
+        super(id, name, description, productType, colors, quantity, price);
         this.sizes = sizes;
         this.material = material;
+        this.type = type;
     }
 
     public ArrayList<String> getSizes() {
@@ -31,11 +33,20 @@ public abstract class ApparelProduct extends Product {
         this.material = material;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
-        return "TextileProduct{" +
+        return "ApparelProduct{" +
                 "sizes=" + sizes +
                 ", material='" + material + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }

@@ -1,8 +1,12 @@
 package com.arikko.acme_store.controllers;
 
+import com.arikko.acme_store.MainApplication;
 import com.arikko.acme_store.users.User;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -16,6 +20,7 @@ public class LoginViewController {
 
     // dummy local database
     private ArrayList<User> users;
+
     @javafx.fxml.FXML
     private Label showPasswordLabel;
 
@@ -31,6 +36,20 @@ public class LoginViewController {
     @javafx.fxml.FXML
     public void signUpOnAction(ActionEvent actionEvent) {
         // scene switch to registration view
+        Scene scene = ((Button) actionEvent.getSource()).getScene();
+        Stage stage = (Stage) scene.getWindow();
+
+        try {
+            FXMLLoader registrationFxmlLoader = new FXMLLoader(
+                    MainApplication.class.getResource("RegistrationView.fxml")
+            );
+
+            Scene registrationScene = new Scene(registrationFxmlLoader.load());
+            stage.setScene(registrationScene);
+            RegistrationViewController registrationViewController = (RegistrationViewController) registrationFxmlLoader.getController();
+            registrationViewController.setUsers(this.users);
+        } catch (Exception e) {
+        }
     }
 
     @javafx.fxml.FXML
@@ -61,9 +80,23 @@ public class LoginViewController {
 
         alert.setAlertType(Alert.AlertType.INFORMATION);
         alert.setHeaderText("Login Successful");
-        alert.showAndWait();
+        alert.show();
 
-        // scene switch to product list view
+        Scene scene = ((Button) actionEvent.getSource()).getScene();
+        Stage stage = (Stage) scene.getWindow();
+
+        try {
+            FXMLLoader layoutFxmlLoader = new FXMLLoader(
+                    MainApplication.class.getResource("LayoutView.fxml")
+            );
+
+            Scene layoutScene = new Scene(layoutFxmlLoader.load());
+            stage.setScene(layoutScene);
+            LayoutViewController layoutViewController = (LayoutViewController) layoutFxmlLoader.getController();
+            layoutViewController.setUsers(this.users);
+            layoutViewController.setCurrentUser(currentUser);
+        } catch (Exception e) {
+        }
     }
 
     @javafx.fxml.FXML

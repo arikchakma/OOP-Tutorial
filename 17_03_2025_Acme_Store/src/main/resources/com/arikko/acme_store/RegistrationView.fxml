@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arikko.acme_store.controllers.RegistrationViewController">
+    <children>
+        <Label layoutX="174.0" layoutY="58.0" text="Hello! Let's create your account in Acme Store." textAlignment="CENTER" />
+        <Label layoutX="240.0" layoutY="20.0" text="Registration" textAlignment="CENTER">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <Label layoutX="158.0" layoutY="151.0" text="Email" />
+        <TextField fx:id="emailTextField" layoutX="158.0" layoutY="175.0" prefHeight="26.0" prefWidth="283.0" />
+        <Label layoutX="159.0" layoutY="263.0" text="Password" />
+        <PasswordField fx:id="passwordPasswordField" layoutX="159.0" layoutY="287.0" prefHeight="26.0" prefWidth="281.0" />
+        <Button layoutX="159.0" layoutY="322.0" mnemonicParsing="false" onAction="#createAccountOnAction" prefHeight="26.0" prefWidth="281.0" text="Create Account" />
+        <Label layoutX="159.0" layoutY="358.0" text="Already have an account?" />
+        <Button depthTest="ENABLE" layoutX="303.0" layoutY="358.0" mnemonicParsing="false" onAction="#loginOnAction" style="-fx-background-color: transparent; -fx-padding: 0;" text="Login" textFill="#0e82c9" underline="true" />
+      <Label layoutX="159.0" layoutY="94.0" text="First Name" />
+      <TextField fx:id="firstNameTextField" layoutX="159.0" layoutY="118.0" prefHeight="26.0" prefWidth="134.0" />
+      <Label layoutX="305.0" layoutY="92.0" text="Last Name" />
+      <TextField fx:id="lastNameTextField" layoutX="305.0" layoutY="116.0" prefHeight="26.0" prefWidth="134.0" />
+      <Label layoutX="159.0" layoutY="208.0" text="Phone Number" />
+      <TextField fx:id="phoneNumberTextField" layoutX="159.0" layoutY="232.0" prefHeight="26.0" prefWidth="283.0" />
+    </children>
+</AnchorPane>
