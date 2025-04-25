@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arikko.scene_switch.AdminViewController">
+   <children>
+      <Label layoutX="159.0" layoutY="182.0" text="This is the Admin View">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="242.0" layoutY="235.0" text="Dummy User:" />
+      <Label fx:id="dummyUserLabel" layoutX="328.0" layoutY="235.0" text="N/A" />
+   </children>
+</AnchorPane>

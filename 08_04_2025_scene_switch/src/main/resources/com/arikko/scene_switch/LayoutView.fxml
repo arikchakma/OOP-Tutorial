@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane fx:id="layoutBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.arikko.scene_switch.LayoutViewController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu fx:id="adminMenu" mnemonicParsing="false" text="Admin">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#showAdminViewOnAction" text="Show Admin View" />
+            </items>
+          </Menu>
+          <Menu fx:id="customerSupportMenu" mnemonicParsing="false" text="Customer Support">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#showCustomerSupportViewOnAction" text="Show Customer Support View" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>
